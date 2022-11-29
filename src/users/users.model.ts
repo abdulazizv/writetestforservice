@@ -47,7 +47,15 @@ export class User extends Model<User,UserCreationAttrs> {
         defaultValue:false
     })
     is_active:boolean;
+
+    @ApiProperty({example:'true',description:"Aktiv foydalanuvchiligi true yoki false"})
+    @Column({
+        type:DataType.BOOLEAN,
+        defaultValue:false
+    })
+    is_ban:boolean;
     
+
     @BelongsToMany(()=>Role,() =>UserRoles)
     roles:Role[]
 }
