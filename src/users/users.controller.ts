@@ -9,8 +9,11 @@ import {
     Delete
   } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Roles } from 'src/decorators/roles-auth.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { JwtUserAuthGuard } from 'src/guards/jwt.user-auth.guard';
+import { RolesGuard } from 'src/guards/roles.guard';
+import { UserSelfGuard } from 'src/guards/user-sample.auth.guard';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -37,7 +40,9 @@ export class UsersController {
 
     @ApiOperation({summary:"Foydalanuvchini olish"})
     @ApiResponse({status:200,type:User})
-    @UseGuards(JwtUserAuthGuard)
+    // @UseGuards(JwtUserAuthGuard)
+    @UseGuards(UserSelfGuard)
+    @UseGuards(JwtAuthGuard)
     @Get(':id')
     getOne(@Param('id') id:number) {
       return this.userService.findById(id);
@@ -45,6 +50,7 @@ export class UsersController {
 
     @ApiOperation({summary:"Foydalanuvchini o'chirish"})
     @ApiResponse({status:205,type:User})
+    @UseGuards(JwtUserAuthGuard)
     @Delete(':id')
     delete(@Param('id') id: number) {
         return this.userService.remove(id);
@@ -52,7 +58,7 @@ export class UsersController {
 
     @ApiOperation({summary:"Foydalanuvchilarni olish"})
     @ApiResponse({status:200,type:[User]})
-    @UseGuards(JwtAuthGuard)
+    
     @Get()
     getAll() {
       return this.userService.getAllUsers();
@@ -60,6 +66,8 @@ export class UsersController {
 
     @ApiOperation({summary:"Foydalanuvchini update qilish"})
     @ApiResponse({status:203,type:User})
+    // @UseGuards(UserSelfGuard)
+    // @UseGuards(JwtAuthGuard)
     @UseGuards(JwtUserAuthGuard)
     @Put(':id')
     update(@Param('id') id: number, @Body() updateuser:updateUserDto) {
@@ -69,6 +77,8 @@ export class UsersController {
 
     @ApiOperation({summary:"Foydalanuvchiga rol berish"})
     @ApiResponse({status:200,type:User})
+    @Roles("ADMIN","USER")
+    @UseGuards(RolesGuard)
     @Post('role')
     addRole(@Body() addRoleDto: AddRoleDto) {
       return this.userService.addRole(addRoleDto);

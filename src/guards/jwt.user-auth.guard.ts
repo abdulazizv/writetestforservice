@@ -6,7 +6,6 @@ export class JwtUserAuthGuard implements CanActivate {
     constructor(private readonly jwtService:JwtService){ }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         try {
-            console.log('Auth')
             const req = context.switchToHttp().getRequest()
             const authHeader = req.headers.authorization
             const params = req.params
@@ -20,6 +19,7 @@ export class JwtUserAuthGuard implements CanActivate {
             }
             const user = this.jwtService.verify(token)
             if(Number(id) !== user.id){
+                console.log("aJoyib")
                 throw new UnauthorizedException({
                     message:"Foydaluvchi faqat o'zini boshqara oladi"
                 })

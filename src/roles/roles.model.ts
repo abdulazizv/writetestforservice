@@ -26,6 +26,7 @@ export class Role extends Model<Role,RoleCreationAttrs> {
         unique:true
     })
     value:string;
+    
     @ApiProperty({example:'POST,DELETE,GET',description:"Roles descriptioni"})
     @Column({
         type:DataType.STRING,
