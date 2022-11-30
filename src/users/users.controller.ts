@@ -9,8 +9,8 @@ import {
     Delete
   } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-import { JwtUserAuthGuard } from 'src/auth/jwt.user-auth.guard';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtUserAuthGuard } from 'src/guards/jwt.user-auth.guard';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';

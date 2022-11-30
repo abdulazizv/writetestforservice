@@ -6,6 +6,7 @@ export class JwtUserAuthGuard implements CanActivate {
     constructor(private readonly jwtService:JwtService){ }
     canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
         try {
+            console.log('Auth')
             const req = context.switchToHttp().getRequest()
             const authHeader = req.headers.authorization
             const params = req.params

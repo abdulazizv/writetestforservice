@@ -105,7 +105,6 @@ export class UsersService {
       throw new HttpException("Foydalanuvchi topilmadi",HttpStatus.NOT_FOUND)
     }
     user.is_ban = true
-    if(user.is_active === true) user.is_active = false
     await user.save()
     return user
   }
@@ -116,7 +115,6 @@ export class UsersService {
       throw new HttpException("Foydalanuvchi topilmadi",HttpStatus.NOT_FOUND)
     }
     user.is_ban = false
-    // if(user.is_active === false) user.is_active = true
     await user.save()
     return user
   }
