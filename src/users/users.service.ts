@@ -26,20 +26,31 @@ export class UsersService {
   async update(id:number,updateuserdto:updateUserDto){
     const user = await this.userRepository.findByPk(id)
     if(!user) throw new HttpException("User id noto'g'ri",HttpStatus.NOT_FOUND)
-    user.password = updateuserdto.password || user.password
-    user.name = updateuserdto.name || user.name
-    user.password = updateuserdto.password || user.password
-    await user.save()
-    return user
+    const check = await this.userRepository.update({name:updateuserdto.name || user.name,password:updateuserdto.password || user.password,email:updateuserdto.email || user.email},{where:{
+      id:id
+    }})
+    if(!check) throw new HttpException("Updateda error bermoqda!",HttpStatus.NOT_FOUND)
+    return {
+      status:200,
+      message:"User is updated",
+      username:user.name
+    }
   }
 
   async findById(id:number){
     return this.userRepository.findByPk(id)
   }
 
-  // async remove(id: number){
-  //   return this.userRepository.re;
-  // }
+  async remove(id: number){
+    await this.userRepository.destroy({where:{
+      id:id
+    }});
+    return {
+      status:200,
+      message:'User is deleted',
+      userId:id
+    }
+  }
 
   async getAllUsers() {
     const users = await this.userRepository.findAll({ include: { all: true } });

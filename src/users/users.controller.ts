@@ -43,12 +43,12 @@ export class UsersController {
       return this.userService.findById(id);
     }
 
-    // @ApiOperation({summary:"Foydalanuvchini o'chirish"})
-    // @ApiResponse({status:205,type:User})
-    // @Delete(':id')
-    // remove(@Param('id') id: number) {
-    //     return this.userService.remove(id);
-    // }
+    @ApiOperation({summary:"Foydalanuvchini o'chirish"})
+    @ApiResponse({status:205,type:User})
+    @Delete(':id')
+    delete(@Param('id') id: number) {
+        return this.userService.remove(id);
+    }
 
     @ApiOperation({summary:"Foydalanuvchilarni olish"})
     @ApiResponse({status:200,type:[User]})
