@@ -22,4 +22,20 @@ export class FilesService {
       );
     }
   }
+
+  async deleteFile(oldLink): Promise<boolean> {
+    try {
+      const filePath = path.resolve(__dirname, '..', 'static' + oldLink);
+      if (!fs.existsSync(filePath)) {
+        return false;
+      }
+      fs.unlinkSync(filePath);
+      return true;
+    } catch (error) {
+      throw new HttpException(
+        'Faylni o`zgartirishda hatolik',
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
 }

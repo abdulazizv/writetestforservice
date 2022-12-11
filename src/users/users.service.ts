@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { where } from 'sequelize';
 import { RolesService } from 'src/roles/roles.service';
+import { UserRoles } from 'src/roles/user-roles.model';
 import { ActivateUserDto } from './dto/activate-user.dto';
 import { AddRoleDto } from './dto/add-role.dto';
 import { BanUserDto } from './dto/ban-user.dto';
@@ -12,6 +12,7 @@ import { User } from './users.model';
 export class UsersService {
   constructor(
     @InjectModel(User) private userRepository: typeof User,
+    @InjectModel(UserRoles) private userroleRepository:typeof UserRoles,
     private readonly roleService: RolesService,
   ) {}
   async createUser(createUserDto: createUserDto) {
@@ -117,5 +118,35 @@ export class UsersService {
     user.is_ban = false
     await user.save()
     return user
+  }
+
+  async deleteValue(userId:number){
+    let valueId = 1
+    const user = await this.userroleRepository.findOne({where:{
+      roleId:valueId,
+      userId:userId
+    }})
+    console.log(user)
+    if(!user){
+      throw new HttpException(
+        "Bu userga tegishli bunday value yo'q",
+        HttpStatus.NOT_FOUND
+        )
+      }
+      const check = await this.userroleRepository.destroy({
+        where:{
+          roleId:valueId,
+          userId:userId
+        }
+      })
+      if(!check) throw new HttpException(
+        "Error has been detected during delete user",
+        HttpStatus.INTERNAL_SERVER_ERROR
+      )
+      return {
+        status:200,
+        message:"User's value successfully deleted",
+        data:user.userId
+      }
   }
 }

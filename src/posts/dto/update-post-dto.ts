@@ -1,10 +1,10 @@
 import { IsString } from "class-validator";
 
-export class CreatePostDto {
-    @IsString()
+export class UpdatePostDto {
+    // @IsString()
     readonly title:string;
-    @IsString()
+    // @IsString()
     readonly content:string;
-    @IsString()
+    // @IsString()
     readonly userId:number;
 }

@@ -2,10 +2,6 @@ import {Table,Model,Column,BelongsToMany,HasMany,ForeignKey,DataType} from 'sequ
 import { User } from 'src/users/users.model';
 import { Role } from './roles.model';
 
-interface RoleCreationAttrs {
-    value:string;
-    description:string;
-}
 
 @Table({tableName:'user_roles',createdAt:false,updatedAt:false})
 export class UserRoles extends Model<UserRoles> {

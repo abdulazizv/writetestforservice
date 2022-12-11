@@ -112,4 +112,12 @@ export class UsersController {
       return this.userService.offBanUser(banoff)
     }
 
+    // @Post('deletevalue/:id')
+    // deletevalueUser(@Param('id') userId:number,@Body() valueId:deleteValue){
+    //   return this.userService.deleteValue(userId,valueId)
+    // }
+    @Post('deletevalue/:id')
+    deletevalueUser(@Param('id') userId:number){
+      return this.userService.deleteValue(userId)
+    }
 }
