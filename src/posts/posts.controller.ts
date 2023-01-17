@@ -1,4 +1,14 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post-dto';
@@ -6,30 +16,36 @@ import { PostsService } from './posts.service';
 
 @Controller('posts')
 export class PostsController {
-    constructor(private readonly postService:PostsService) {}
-    @Post()
-    @UseInterceptors(FileInterceptor('image'))
-    create(@Body() createPostDto:CreatePostDto,@UploadedFile() image) {
-        return this.postService.create(createPostDto,image)
-    }
+  constructor(private readonly postService: PostsService) {}
 
-    @Get()
-    getAll(){
-        return this.postService.getAll()
-    }
+  @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  create(@Body() createPostDto: CreatePostDto, @UploadedFile() image) {
+    return this.postService.create(createPostDto, image);
+  }
 
-    @Get(':id')
-    getOne(@Param('id') id:number){
-        return this.postService.getOne(id)
-    }
+  @Get()
+  getAll() {
+    return this.postService.getAll();
+  }
 
-    @Put(':id')
-    update(@Param('id') id:number,@Body() updatepostDto:UpdatePostDto,@UploadedFile() image){
-        return this.postService.update(id,updatepostDto,image)
-    }
+  // @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  getOne(@Param('id') id: number) {
+    return this.postService.getOne(id);
+  }
 
-    @Delete(':id')
-    delete(@Param('id') id:number){
-        return this.postService.delete(id)
-    }
+  @Put(':id')
+  update(
+    @Param('id') id: number,
+    @Body() updatepostDto: UpdatePostDto,
+    @UploadedFile() image,
+  ) {
+    return this.postService.update(id, updatepostDto, image);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: number) {
+    return this.postService.delete(id);
+  }
 }

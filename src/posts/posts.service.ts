@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { FilesService } from 'src/files/files.service';
+import { FilesService } from '../files/files.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post-dto';
 import { Post } from './posts.model';
@@ -11,6 +11,7 @@ export class PostsService {
     @InjectModel(Post) private postRepository: typeof Post,
     private readonly fileService: FilesService,
   ) {}
+
   async create(createPostDto: CreatePostDto, image: any) {
     const fileName = await this.fileService.createFile(image);
     const post = await this.postRepository.create({
@@ -25,7 +26,11 @@ export class PostsService {
   }
 
   async getOne(id: number): Promise<Post> {
-    return this.postRepository.findByPk(id);
+    return this.postRepository.findOne({
+      where: {
+        id: id,
+      },
+    });
   }
 
   async update(id: number, updatePostDto: UpdatePostDto, image: any) {
@@ -58,18 +63,20 @@ export class PostsService {
     );
     if (!check)
       throw new HttpException('Updateda error bermoqda!', HttpStatus.NOT_FOUND);
-    return {
-      status: 200,
-      message: 'User is updated',
-      username: post.title,
-    };
+    const resp = await this.postRepository.findOne({
+      where: {
+        id: +id,
+      },
+    });
+    return resp;
   }
 
   async delete(id: number) {
-    return this.postRepository.destroy({
+    await this.postRepository.destroy({
       where: {
         id: id,
       },
     });
+    return true;
   }
 }

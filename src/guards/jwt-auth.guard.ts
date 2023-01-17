@@ -16,7 +16,8 @@ export class JwtAuthGuard implements CanActivate {
                     message:"Foydalanuvchi avtorizatsiyadan o'tmagan"
                 })
             }
-            const user = this.jwtService.verify(token)
+            const user = this.jwtService.verify(token)  
+            console.log(user)
             req.user = user
             return true
         } catch (error) {
